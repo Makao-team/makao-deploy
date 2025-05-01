@@ -1,14 +1,15 @@
 package com.makao.deploy.entity
 
 import com.makao.deploy.entity.base.Auditable
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
+import jakarta.persistence.*
 
+@Entity
 class AdminUser(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private var id: Long,
+
+    @Column(unique = true)
     private var email: String,
     private var password: String,
 ) : Auditable()
