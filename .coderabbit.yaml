@@ -1,0 +1,89 @@
+language: "ko-KR"
+early_access: false
+tone_instructions: "'~했어요!'나 '~하셨나요?', '~걸까요??', '~할 것 같아요~!', '~해요.', '~요ㅎㅎ' 와 같은 어미를 사용해서 친근하고 다정한 톤으로 리뷰해주세요."
+
+reviews:
+  high_level_summary: true
+  review_status: true
+  path_filters:
+    - "!**/.xml"
+    - "!**/__generated__/**"
+    - "!**/generated/**"
+    - "!**/*.svg"
+    - "!**/*.png"
+    - "!**/*.jpg"
+    - "!**/*.gif"
+    - "!**/*.lock"
+  
+  path_instructions:
+    - path: "**/*.kt"
+      instructions: |
+        "코틀린과 스프링부트 코드를 아래 기준으로 검토해주세요!
+        - 코틀린 관련:
+          - 코틀린 관용구(idiom) 사용이 적절한가요? (data class, when, let/run/apply/also 등)
+          - 널 안전성이 잘 지켜지나요? (?, !!, Elvis 연산자 등)
+          - 불변성을 잘 활용하나요? (val vs var)
+          - 확장 함수를 적절히 활용하나요?
+        
+        - 스프링부트/JPA 관련:
+          - 계층 분리가 명확한가요? (Controller, Service, Repository)
+          - JPA Entity 설계가 적절한가요? (연관관계, 페치 전략)
+          - 트랜잭션 관리가 잘 되어있나요?
+          - 의존성 주입이 생성자 주입 방식인가요?"
+
+    - path: "src/main/kotlin/com/makao/deploy/domain/**/*.kt"
+      instructions: |
+        "도메인 엔티티는 아래 사항을 확인해주세요!
+        - @Entity 설정이 적절한가요?
+        - 연관관계 매핑이 잘 되어있나요?
+        - 불변성을 잘 지키고 있나요?
+        - 비즈니스 로직이 최소화되어 있나요?"
+
+    - path: "src/main/kotlin/com/makao/deploy/repository/**/*.kt"
+      instructions: |
+        "리포지토리는 아래 사항을 확인해주세요!
+        - 쿼리 메소드 네이밍이 명확한가요?
+        - N+1 문제는 없나요?
+        - 페이징/정렬이 필요한 경우 적절히 구현되어 있나요?"
+
+    - path: "src/main/kotlin/com/makao/deploy/service/**/*.kt"
+      instructions: |
+        "서비스 계층은 아래 사항을 확인해주세요!
+        - @Transactional 사용이 적절한가요?
+        - 비즈니스 로직이 명확한가요?
+        - 예외 처리가 잘 되어있나요?"
+
+    - path: "src/main/kotlin/com/makao/deploy/controller/**/*.kt"
+      instructions: |
+        "컨트롤러는 아래 사항을 확인해주세요!
+        - REST API 설계가 적절한가요?
+        - 응답 형식이 일관적인가요?
+        - 예외 처리가 잘 되어있나요?"
+
+    - path: "src/main/resources/application*.yml"
+      instructions: |
+        "설정 파일은 아래 사항을 확인해주세요!
+        - 프로파일 분리가 잘 되어있나요?
+        - 민감 정보가 노출되어 있지 않나요?
+        - JPA/데이터베이스 설정이 적절한가요?"
+
+    - path: "src/test/kotlin/com/makao/deploy/**/*.kt"
+      instructions: |
+        "테스트 코드는 아래 사항을 확인해주세요!
+        - given-when-then 패턴을 따르나요?
+        - 테스트 격리가 잘 되어있나요?
+        - 모킹이 적절히 사용되었나요?"
+
+  auto_review:
+    enabled: true
+    ignore_title_keywords:
+      - "WIP"
+    drafts: false
+    base_branches:
+      - "main"
+      - "develop"
+      - "feature/*"
+      - "bugfix/*"
+
+chat:
+  auto_reply: true 
