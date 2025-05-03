@@ -32,6 +32,9 @@ dependencies {
     // Database dependencies
     implementation 'org.postgresql:postgresql'
 
+    // Etc
+    implementation 'at.favre.lib:bcrypt:0.10.2'
+
     // Testing dependencies
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.jetbrains.kotlin:kotlin-test-junit5'
