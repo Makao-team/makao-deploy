@@ -36,8 +36,7 @@ out/
 .vscode/
 
 ### Application ###
-src/main/resources/application-local-db.yml
-docker-compose.yml
+docker-compose-prod.yml
 
 ### Kotlin ###
 .kotlin

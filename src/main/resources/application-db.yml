@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    url: ${MAKAO_DEPLOY_DB_URL:jdbc:postgresql://makao-deploy-db:5432/makao_deploy_db }
+    username: ${MAKAO_DEPLOY_DB_USERNAME:makao}
+    password: ${MAKAO_DEPLOY_DB_PASSWORD:test1234}
+    driver-class-name: org.postgresql.Driver
+  sql:
+    init:
+      mode: ${MAKAO_DEPLOY_DB_INIT_MODE:always}
+      schema-locations: classpath:db/schema.sql
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect

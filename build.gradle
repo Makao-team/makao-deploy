@@ -41,6 +41,7 @@ dependencies {
 
     // Etc
     implementation 'at.favre.lib:bcrypt:0.10.2'
+    implementation("org.springframework.kafka:spring-kafka")
 
     // Testing dependencies
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    container_name: makao-deploy-zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    container_name: makao-deploy-kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    healthcheck:
+      test: [ "CMD", "kafka-topics", "--bootstrap-server", "localhost:9092", "--list" ]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+
+  makao-deploy-db:
+    image: postgres:latest
+    container_name: makao-deploy-postgres
+    environment:
+      POSTGRES_USER: makao
+      POSTGRES_PASSWORD: test1234
+      POSTGRES_DB: makao_deploy_db
+    restart: unless-stopped
+    ports:
+      - "5435:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-U", "makao", "-d", "makao_deploy_db" ]
+      interval: 10s
+      retries: 5
+      start_period: 10s
+
+  makao-deploy-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: makao-deploy-api
+    restart: unless-stopped
+    depends_on:
+      makao-deploy-db:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+    ports:
+      - "8181:8181"
+
+volumes:
+  postgres-data:
