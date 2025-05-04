@@ -37,6 +37,7 @@ out/
 
 ### Application ###
 docker-compose-prod.yml
+.env
 
 ### Kotlin ###
 .kotlin

@@ -2,7 +2,7 @@ spring:
   application:
     name: makao-deploy
   profiles:
-    active: db, kafka
+    active: db, kafka, client
 
 server:
   port: ${MAKAO_DEPLOY_SERVER_PORT:8181}
@@ -12,4 +12,4 @@ logging:
     root: INFO
     com.makao.deploy: DEBUG
     org.springframework.web: INFO
-    org.hibernate: INFO 
+    org.hibernate: INFO
