@@ -7,9 +7,10 @@ import jakarta.persistence.*
 class AdminUser(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private var id: Long,
+    val id: Long? = null,
+    var name: String,
 
     @Column(unique = true)
-    private var email: String,
-    private var password: String,
+    val email: String,
+    var password: String,
 ) : Auditable()
