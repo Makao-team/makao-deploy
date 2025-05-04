@@ -13,6 +13,7 @@ CREATE TABLE project
 CREATE TABLE admin_user
 (
     id          BIGSERIAL PRIMARY KEY,
+    name        TEXT,
     email       TEXT UNIQUE,
     password    TEXT,
     created_at  TIMESTAMP,
