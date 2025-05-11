@@ -1,0 +1,3 @@
+client:
+  slack:
+    webhook-url: ${SLACK_WEBHOOK_NOTI_URL}
