@@ -21,4 +21,4 @@ abstract class Auditable {
     fun archive() {
         isArchived = true
     }
-}
+} 
