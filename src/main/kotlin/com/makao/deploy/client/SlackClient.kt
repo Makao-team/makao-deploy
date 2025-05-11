@@ -1,6 +1,7 @@
 package com.makao.deploy.client
 
 import com.makao.deploy.config.ClientProperties
+import com.makao.deploy.response.InternalServerException
 import com.slack.api.Slack
 import com.slack.api.webhook.Payload
 
@@ -14,14 +15,16 @@ enum class SlackChannelName {
 
 class SlackClientImpl(private val clientProperties: ClientProperties) : SlackClient {
     private val slack = Slack.getInstance()
+    private val log = org.slf4j.LoggerFactory.getLogger(SlackClientImpl::class.java)
 
     override fun sendMessage(channel: SlackChannelName, message: String) {
-        var webhookUrl: String
-        when (channel) {
-            SlackChannelName.NOTIFICATION -> webhookUrl = clientProperties.slack.webhookUrl
+        val webhookUrl = when (channel) {
+            SlackChannelName.NOTIFICATION -> clientProperties.slack.webhookUrl
         }
 
-        slack.send(webhookUrl, Payload.builder().text(message).build())
+        runCatching { slack.send(webhookUrl, Payload.builder().text(message).build()) }
+            .onFailure { throw InternalServerException("슬랙 메시지 전송 실패: ${it.message}", it) }
+            .onSuccess { log.info("슬랙 메시지 전송 완료: $channel: $message") }
     }
 }
 

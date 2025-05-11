@@ -11,10 +11,10 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class AdminUserService(
     private val adminUserRepository: AdminUserRepository,
-    private val slackClient: SlackClient
+    private val slackClient: SlackClient,
 ) {
     @Transactional
-    fun signUp(dto: AdminUserDTO.SignUpRequest): Long {
+    fun requestSignUp(dto: AdminUserDTO.RequestSignUpRequest): Long {
         if (adminUserRepository.existsByEmail(dto.email))
             throw BadRequestException("이메일이 중복되었어요.")
 

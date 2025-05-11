@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: ${MAKAO_DEPLOY_DB_URL:jdbc:postgresql://makao-deploy-db:5432/makao_deploy_db }
+    url: ${MAKAO_DEPLOY_DB_URL:jdbc:postgresql://makao-deploy-db:5432/makao_deploy_db}
     username: ${MAKAO_DEPLOY_DB_USERNAME:makao}
     password: ${MAKAO_DEPLOY_DB_PASSWORD:test1234}
     driver-class-name: org.postgresql.Driver
