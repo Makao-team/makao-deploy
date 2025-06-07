@@ -1,10 +1,12 @@
 language: "ko-KR"
 early_access: false
-tone_instructions: "'~했어요!'나 '~하셨나요?', '~걸까요??', '~할 것 같아요~!', '~해요.', '~요ㅎㅎ' 와 같은 어미를 사용해서 친근하고 다정한 톤으로 리뷰해주세요."
+tone_instructions: "친절하지만 신중하고 핵심만 명확하게 설명"
 
 reviews:
   high_level_summary: true
   review_status: true
+  poem: false
+  collapse_walkthrough: true
   path_filters:
     - "!**/.xml"
     - "!**/__generated__/**"

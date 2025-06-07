@@ -7,4 +7,4 @@ import org.springframework.stereotype.Repository
 @Repository
 interface AdminUserRepository : JpaRepository<AdminUser, Long> {
     fun existsByEmail(email: String): Boolean
-}
+} 

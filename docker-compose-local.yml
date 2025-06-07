@@ -49,7 +49,7 @@ services:
   makao-deploy-api:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: api/Dockerfile
     container_name: makao-deploy-api
     restart: unless-stopped
     depends_on:
