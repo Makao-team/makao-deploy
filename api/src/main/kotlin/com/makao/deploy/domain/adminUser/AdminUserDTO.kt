@@ -21,4 +21,19 @@ class AdminUserDTO {
             return AdminUser(name = name, email = email, password = password)
         }
     }
+
+    data class ConfirmSignUpRequest(
+        @field:Email(message = "이메일 형식이 아니에요.")
+        @field:NotBlank(message = "이메일을 입력해주세요.")
+        val email: String,
+    )
+
+    data class SignInRequest(
+        @field:Email(message = "이메일 형식이 아니에요.")
+        @field:NotBlank(message = "이메일을 입력해주세요.")
+        val email: String,
+
+        @field:NotBlank(message = "비밀번호를 입력해주세요.")
+        val password: String,
+    )
 }

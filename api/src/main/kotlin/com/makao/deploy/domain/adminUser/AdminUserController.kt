@@ -19,4 +19,15 @@ class AdminUserController(
     fun requestSignUp(@Valid @RequestBody dto: AdminUserDTO.RequestSignUpRequest): ResponseEntity<CommonResponse<Long>> {
         return CommonResponse.success(adminUserService.requestSignUp(dto))
     }
+
+    // TODO: AuthGuard(SuperAdmin) required
+    @PostMapping("/sign-up/confirm")
+    fun confirmSignUp(@Valid @RequestBody dto: AdminUserDTO.ConfirmSignUpRequest): ResponseEntity<CommonResponse<Long>> {
+        return CommonResponse.success(adminUserService.confirmSignUp(dto))
+    }
+
+    @PostMapping("/sign-in")
+    fun signIn(@Valid @RequestBody dto: AdminUserDTO.SignInRequest): ResponseEntity<CommonResponse<Long>> {
+        return CommonResponse.success(adminUserService.signIn(dto))
+    }
 }
