@@ -78,13 +78,21 @@ class AdminUserControllerTest : IntegrationTest() {
     inner class `회원 가입 승인` {
         @Test
         fun `회원가입 승인 성공`() = runBlocking {
-            insertUser("test@email.com")
+            val userId = insertUser("test@email.com")
+            val loginResponse = client.post(getUrl("/admin-user/test-login")) {
+                parameter("userId", userId)
+                parameter("role", AdminUserRole.SUPER_ADMIN)
+            }
+            val cookies = loginResponse.setCookie()
 
-            var response = client.post(getUrl("/admin-user/sign-up/confirm")) {
+            val response = client.post(getUrl("/admin-user/sign-up/confirm")) {
                 contentType(ContentType.Application.Json)
                 setBody(
                     AdminUserDTO.ConfirmSignUpRequest(email = "test@email.com")
                 )
+                cookies.forEach { cookie ->
+                    header("Cookie", "${cookie.name}=${cookie.value}")
+                }
             }
 
             assertEquals(HttpStatusCode.OK, response.status)
@@ -92,11 +100,20 @@ class AdminUserControllerTest : IntegrationTest() {
 
         @Test
         fun `회원가입 승인 실패 - 가입 요청이 존재하지 않음`() = runBlocking {
+            val loginResponse = client.post(getUrl("/admin-user/test-login")) {
+                parameter("userId", 1L)
+                parameter("role", AdminUserRole.SUPER_ADMIN)
+            }
+            val cookies = loginResponse.setCookie()
+
             val response = client.post(getUrl("/admin-user/sign-up/confirm")) {
                 contentType(ContentType.Application.Json)
                 setBody(
                     AdminUserDTO.ConfirmSignUpRequest(email = "test@email.com")
                 )
+                cookies.forEach { cookie ->
+                    header("Cookie", "${cookie.name}=${cookie.value}")
+                }
             }
 
             assertEquals(HttpStatusCode.BadRequest, response.status)
@@ -104,12 +121,21 @@ class AdminUserControllerTest : IntegrationTest() {
 
         @Test
         fun `회원가입 승인 실패 - 이미 가입된 계정`() = runBlocking {
-            insertUser("test@email.com", isConfirmed = true)
+            val userId = insertUser("test@email.com", isConfirmed = true)
+            val loginResponse = client.post(getUrl("/admin-user/test-login")) {
+                parameter("userId", userId)
+                parameter("role", AdminUserRole.SUPER_ADMIN)
+            }
+            val cookies = loginResponse.setCookie()
+
             val response = client.post(getUrl("/admin-user/sign-up/confirm")) {
                 contentType(ContentType.Application.Json)
                 setBody(
                     AdminUserDTO.ConfirmSignUpRequest(email = "test@email.com")
                 )
+                cookies.forEach { cookie ->
+                    header("Cookie", "${cookie.name}=${cookie.value}")
+                }
             }
 
             assertEquals(HttpStatusCode.BadRequest, response.status)
@@ -117,12 +143,21 @@ class AdminUserControllerTest : IntegrationTest() {
 
         @Test
         fun `회원가입 승인 실패 - 일반 관리자가 아닌 관리자 계정`() = runBlocking {
-            insertUser("test@email.com", role = AdminUserRole.SUPER_ADMIN)
+            val userId = insertUser("test@email.com", role = AdminUserRole.SUPER_ADMIN)
+            val loginResponse = client.post(getUrl("/admin-user/test-login")) {
+                parameter("userId", userId)
+                parameter("role", AdminUserRole.SUPER_ADMIN)
+            }
+            val cookies = loginResponse.setCookie()
+
             val response = client.post(getUrl("/admin-user/sign-up/confirm")) {
                 contentType(ContentType.Application.Json)
                 setBody(
                     AdminUserDTO.ConfirmSignUpRequest(email = "test@email.com")
                 )
+                cookies.forEach { cookie ->
+                    header("Cookie", "${cookie.name}=${cookie.value}")
+                }
             }
 
             assertEquals(HttpStatusCode.BadRequest, response.status)
@@ -143,7 +178,6 @@ class AdminUserControllerTest : IntegrationTest() {
                     )
                 )
             }
-
             assertEquals(HttpStatusCode.OK, response.status)
         }
 
@@ -158,7 +192,6 @@ class AdminUserControllerTest : IntegrationTest() {
                     )
                 )
             }
-
             assertEquals(HttpStatusCode.BadRequest, response.status)
         }
 
@@ -174,7 +207,6 @@ class AdminUserControllerTest : IntegrationTest() {
                     )
                 )
             }
-
             assertEquals(HttpStatusCode.BadRequest, response.status)
         }
 
@@ -190,7 +222,6 @@ class AdminUserControllerTest : IntegrationTest() {
                     )
                 )
             }
-
             assertEquals(HttpStatusCode.BadRequest, response.status)
         }
     }
@@ -201,22 +232,28 @@ class AdminUserControllerTest : IntegrationTest() {
         name: String = "test user",
         role: AdminUserRole = AdminUserRole.ADMIN,
         isConfirmed: Boolean = false
-    ) {
+    ): Long? {
         val hashedPassword = BCrypt.withDefaults().hashToString(12, password.toCharArray())
-
+        var userId: Long? = null
         transactionTemplate.executeWithoutResult {
             val query = """
             INSERT INTO admin_user (email, password, name, role, is_confirmed)
             VALUES (?, ?, ?, ?, ?)
+            RETURNING id
         """.trimIndent()
 
-            em.createNativeQuery(query)
+            val result = em.createNativeQuery(query)
                 .setParameter(1, email)
                 .setParameter(2, hashedPassword)
                 .setParameter(3, name)
                 .setParameter(4, role)
                 .setParameter(5, isConfirmed)
-                .executeUpdate()
+                .singleResult
+            userId = when (result) {
+                is Number -> result.toLong()
+                else -> (result as? java.math.BigInteger)?.toLong() ?: null
+            }
         }
+        return userId
     }
 }

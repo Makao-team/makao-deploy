@@ -2,6 +2,7 @@ package com.makao.deploy.domain.adminUser
 
 import com.makao.deploy.client.SlackChannelName
 import com.makao.deploy.client.SlackClient
+import com.makao.deploy.entity.AdminUser
 import com.makao.deploy.entity.AdminUserRole
 import com.makao.deploy.repository.AdminUserRepository
 import com.makao.deploy.response.BadRequestException
@@ -46,17 +47,23 @@ class AdminUserService(
     }
 
     @Transactional(readOnly = true)
-    fun signIn(dto: AdminUserDTO.SignInRequest): Long {
+    fun signIn(dto: AdminUserDTO.SignInRequest): AdminUser {
         val adminUser = adminUserRepository.findByEmail(dto.email)
             ?: throw BadRequestException("가입된 계정이 아니에요.")
 
         if (!adminUser.isConfirmed)
             throw BadRequestException("가입이 승인되지 않은 계정이에요. 슈퍼 관리자에게 문의해주세요.")
 
-
         if (!StringEncoder.match(dto.password, adminUser.password))
             throw BadRequestException("비밀번호가 일치하지 않아요.")
 
-        return adminUser.id!!
+        return adminUser
+    }
+
+    fun check(userId: Long?, role: String?): Boolean {
+        if (userId == null || role == null)
+            throw BadRequestException("로그인 정보가 없어요.")
+
+        return true
     }
 }
