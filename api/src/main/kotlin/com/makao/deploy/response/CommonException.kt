@@ -18,6 +18,11 @@ class NotFoundException(
     override val cause: Throwable? = null
 ) : CommonException(message, HttpStatus.NOT_FOUND, cause)
 
+class UnauthorizedException(
+    override val message: String,
+    override val cause: Throwable? = null
+) : CommonException(message, HttpStatus.UNAUTHORIZED, cause)
+
 class InternalServerException(
     override val message: String,
     override val cause: Throwable? = null

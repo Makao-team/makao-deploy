@@ -6,6 +6,9 @@ spring:
 
 server:
   port: ${MAKAO_DEPLOY_SERVER_PORT:8181}
+  servlet:
+    session:
+      timeout: 60m
 
 logging:
   level:
