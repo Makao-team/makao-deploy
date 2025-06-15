@@ -16,6 +16,7 @@ class AdminUser(
 
     var password: String,
 
+    @Enumerated(EnumType.STRING)
     var role: AdminUserRole = AdminUserRole.ADMIN,
 
     var isConfirmed: Boolean = false

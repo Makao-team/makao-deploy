@@ -33,7 +33,7 @@ class AdminUserController(
     ): ResponseEntity<CommonResponse<Long>> {
         val adminUser = adminUserService.signIn(dto)
         session.setAttribute("userId", adminUser.id!!)
-        session.setAttribute("role", adminUser.role)
+        session.setAttribute("role", adminUser.role.value)
 
         return CommonResponse.success(adminUser.id!!)
     }

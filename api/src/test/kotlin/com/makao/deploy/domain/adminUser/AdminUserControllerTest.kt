@@ -143,7 +143,7 @@ class AdminUserControllerTest : IntegrationTest() {
 
         @Test
         fun `회원가입 승인 실패 - 일반 관리자가 아닌 관리자 계정`() = runBlocking {
-            val userId = insertUser("test@email.com", role = AdminUserRole.SUPER_ADMIN)
+            val userId = insertUser("test@email.com", role = AdminUserRole.SUPER_ADMIN.value)
             val loginResponse = client.post(getUrl("/admin-user/test-login")) {
                 parameter("userId", userId)
                 parameter("role", AdminUserRole.SUPER_ADMIN)
@@ -230,7 +230,7 @@ class AdminUserControllerTest : IntegrationTest() {
         email: String,
         password: String = "password123!",
         name: String = "test user",
-        role: AdminUserRole = AdminUserRole.ADMIN,
+        role: String = AdminUserRole.ADMIN.value,
         isConfirmed: Boolean = false
     ): Long? {
         val hashedPassword = BCrypt.withDefaults().hashToString(12, password.toCharArray())
