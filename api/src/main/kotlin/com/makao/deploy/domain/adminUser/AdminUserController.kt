@@ -16,19 +16,19 @@ class AdminUserController(
     private val adminUserService: AdminUserService,
 ) {
     @PostMapping("/sign-up/request")
-    fun requestSignUp(@Valid @RequestBody dto: AdminUserDTO.RequestSignUpRequest): ResponseEntity<CommonResponse<Long>> {
+    fun requestSignUp(@Valid @RequestBody dto: RequestSignUpRequest): ResponseEntity<CommonResponse<Long>> {
         return CommonResponse.success(adminUserService.requestSignUp(dto))
     }
 
     @AuthGuard(roles = [AdminUserRole.SUPER_ADMIN])
     @PostMapping("/sign-up/confirm")
-    fun confirmSignUp(@Valid @RequestBody dto: AdminUserDTO.ConfirmSignUpRequest): ResponseEntity<CommonResponse<Long>> {
+    fun confirmSignUp(@Valid @RequestBody dto: ConfirmSignUpRequest): ResponseEntity<CommonResponse<Long>> {
         return CommonResponse.success(adminUserService.confirmSignUp(dto))
     }
 
     @PostMapping("/sign-in")
     fun signIn(
-        @Valid @RequestBody dto: AdminUserDTO.SignInRequest,
+        @Valid @RequestBody dto: SignInRequest,
         session: HttpSession
     ): ResponseEntity<CommonResponse<Long>> {
         val adminUser = adminUserService.signIn(dto)

@@ -29,7 +29,7 @@ class AdminUserControllerTest : IntegrationTest() {
             val response = client.post(getUrl("/admin-user/sign-up/request")) {
                 contentType(ContentType.Application.Json)
                 setBody(
-                    AdminUserDTO.RequestSignUpRequest(
+                    RequestSignUpRequest(
                         email = "test@example.com",
                         password = "securePassword123!",
                         name = "makao",
@@ -46,7 +46,7 @@ class AdminUserControllerTest : IntegrationTest() {
             val response = client.post(getUrl("/admin-user/sign-up/request")) {
                 contentType(ContentType.Application.Json)
                 setBody(
-                    AdminUserDTO.RequestSignUpRequest(
+                    RequestSignUpRequest(
                         email = "test@email.com",
                         password = "securePassword123!",
                         name = "makao",
@@ -62,7 +62,7 @@ class AdminUserControllerTest : IntegrationTest() {
             val response = client.post(getUrl("/admin-user/sign-up/request")) {
                 contentType(ContentType.Application.Json)
                 setBody(
-                    AdminUserDTO.RequestSignUpRequest(
+                    RequestSignUpRequest(
                         email = "test@email.com",
                         password = "short",
                         name = "makao",
@@ -88,7 +88,7 @@ class AdminUserControllerTest : IntegrationTest() {
             val response = client.post(getUrl("/admin-user/sign-up/confirm")) {
                 contentType(ContentType.Application.Json)
                 setBody(
-                    AdminUserDTO.ConfirmSignUpRequest(email = "test@email.com")
+                    ConfirmSignUpRequest(email = "test@email.com")
                 )
                 cookies.forEach { cookie ->
                     header("Cookie", "${cookie.name}=${cookie.value}")
@@ -109,7 +109,7 @@ class AdminUserControllerTest : IntegrationTest() {
             val response = client.post(getUrl("/admin-user/sign-up/confirm")) {
                 contentType(ContentType.Application.Json)
                 setBody(
-                    AdminUserDTO.ConfirmSignUpRequest(email = "test@email.com")
+                    ConfirmSignUpRequest(email = "test@email.com")
                 )
                 cookies.forEach { cookie ->
                     header("Cookie", "${cookie.name}=${cookie.value}")
@@ -131,7 +131,7 @@ class AdminUserControllerTest : IntegrationTest() {
             val response = client.post(getUrl("/admin-user/sign-up/confirm")) {
                 contentType(ContentType.Application.Json)
                 setBody(
-                    AdminUserDTO.ConfirmSignUpRequest(email = "test@email.com")
+                    ConfirmSignUpRequest(email = "test@email.com")
                 )
                 cookies.forEach { cookie ->
                     header("Cookie", "${cookie.name}=${cookie.value}")
@@ -153,7 +153,7 @@ class AdminUserControllerTest : IntegrationTest() {
             val response = client.post(getUrl("/admin-user/sign-up/confirm")) {
                 contentType(ContentType.Application.Json)
                 setBody(
-                    AdminUserDTO.ConfirmSignUpRequest(email = "test@email.com")
+                    ConfirmSignUpRequest(email = "test@email.com")
                 )
                 cookies.forEach { cookie ->
                     header("Cookie", "${cookie.name}=${cookie.value}")
@@ -172,7 +172,7 @@ class AdminUserControllerTest : IntegrationTest() {
             val response = client.post(getUrl("/admin-user/sign-in")) {
                 contentType(ContentType.Application.Json)
                 setBody(
-                    AdminUserDTO.SignInRequest(
+                    SignInRequest(
                         email = "test@email.com",
                         password = "password123!"
                     )
@@ -186,7 +186,7 @@ class AdminUserControllerTest : IntegrationTest() {
             val response = client.post(getUrl("/admin-user/sign-in")) {
                 contentType(ContentType.Application.Json)
                 setBody(
-                    AdminUserDTO.SignInRequest(
+                    SignInRequest(
                         email = "test@email.com",
                         password = "password123!"
                     )
@@ -201,7 +201,7 @@ class AdminUserControllerTest : IntegrationTest() {
             val response = client.post(getUrl("/admin-user/sign-in")) {
                 contentType(ContentType.Application.Json)
                 setBody(
-                    AdminUserDTO.SignInRequest(
+                    SignInRequest(
                         email = "test@email.com",
                         password = "password123!"
                     )
@@ -216,7 +216,7 @@ class AdminUserControllerTest : IntegrationTest() {
             val response = client.post(getUrl("/admin-user/sign-in")) {
                 contentType(ContentType.Application.Json)
                 setBody(
-                    AdminUserDTO.SignInRequest(
+                    SignInRequest(
                         email = "test@email.com",
                         password = "wrongPassword123!"
                     )

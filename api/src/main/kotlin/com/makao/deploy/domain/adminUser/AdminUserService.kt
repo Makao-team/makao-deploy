@@ -16,7 +16,7 @@ class AdminUserService(
     private val slackClient: SlackClient,
 ) {
     @Transactional
-    fun requestSignUp(dto: AdminUserDTO.RequestSignUpRequest): Long {
+    fun requestSignUp(dto: RequestSignUpRequest): Long {
         if (adminUserRepository.existsByEmail(dto.email))
             throw BadRequestException("이메일이 중복되었어요.")
 
@@ -32,7 +32,7 @@ class AdminUserService(
     }
 
     @Transactional
-    fun confirmSignUp(dto: AdminUserDTO.ConfirmSignUpRequest): Long {
+    fun confirmSignUp(dto: ConfirmSignUpRequest): Long {
         val adminUser = adminUserRepository.findByEmail(dto.email)
             ?: throw BadRequestException("가입 요청이 존재하지 않아요.")
 
@@ -47,7 +47,7 @@ class AdminUserService(
     }
 
     @Transactional(readOnly = true)
-    fun signIn(dto: AdminUserDTO.SignInRequest): AdminUser {
+    fun signIn(dto: SignInRequest): AdminUser {
         val adminUser = adminUserRepository.findByEmail(dto.email)
             ?: throw BadRequestException("가입된 계정이 아니에요.")
 
