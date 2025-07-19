@@ -3,6 +3,7 @@ package com.makao.deploy.response
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 
+// TODO ResponseEntity를 상속받아서 구현할까? 그게 더 좋을 것같은데
 data class CommonResponse<T>(
     val message: String,
     val data: T? = null

@@ -12,6 +12,7 @@ import java.time.LocalDateTime
 @SQLRestriction("is_archived = false")
 @EntityListeners(AuditingEntityListener::class)
 abstract class Auditable {
+    // TODO: lateinit 등 알아보기
     @CreatedDate
     @Column(updatable = false)
     open var createdAt: LocalDateTime? = null
